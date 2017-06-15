@@ -1,0 +1,109 @@
+@import "normalize.css"
+@import "colors"
+
+.email-sans
+    font-family: Avenir, Helvetica, Arial, sans-serif
+
+.email-serif
+    font-family: ‘Palatino Linotype’, ‘Book Antiqua’, Palatino, Georgia, sans-serif
+
+.email-padding
+    padding-left: 20px
+    padding-right: 20px
+
+
+.md
+    p
+        margin: 0 0 1em 0
+    p:last-child
+        margin: 0
+    a
+        color: $primary
+        text-decoration: none
+        word-wrap: break-word
+        word-break: break-all
+        max-width: 560px
+    code, pre
+        word-wrap: break-word
+        word-break: break-all
+        max-width: 560px
+        overflow: hidden
+    h1
+        font-size: 120%
+    h2, h3, h4
+        font-size: 110%
+    blockquote
+        margin: 1.5em
+
+
+.ib
+    display: inline-block
+
+.button
+    display: inline-block
+    padding: 1em
+    cursor: pointer
+    user-select: none
+    font-weight: normal
+    text-decoration: none
+    background-color: $primary
+    color: #fff
+    border-radius: 4px
+    letter-spacing: 0.1em
+    text-transform: uppercase
+    font-size: 0.875em
+    transition: background-color 0.2s ease-out
+    &:hover
+        background-color: $primary-hover
+
+input[type=text], select
+    @extend .email-sans
+    padding: 0.5em 1em
+    display: block
+    width: calc(100% - 2em)
+    border: 1px solid $border
+    background-color: $bk
+    border-radius: 4px
+    text-align: left
+    color: $dark-2
+    transition: background-color 0.2s ease-out
+
+input:focus, select:focus
+    outline: none
+    border: 1px solid $primary
+    background-color: transparent
+    color: $dark-1
+
+
+input[type=radio]
+    display: inline-block
+
+label
+    @extend .email-sans
+    vertical-align: baseline
+    padding-left: 0.5em
+    user-select: none
+
+select
+    width: 100%
+    text-align: center
+    appearance: none
+
+
+.exp
+    margin: 0 0 1.5em 0
+    color: $dark-2
+    .exp-head
+        font-size: 0.925em
+        font-weight: bold
+    .exp-sub
+        font-size: 0.75em
+        font-weight: normal
+
+
+.pad-right
+    padding-right: 0.5em
+
+.clear
+    clear: both
+
