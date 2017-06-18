@@ -1,0 +1,21 @@
+{
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "dependencies": {
+    "@google-cloud/datastore": "^1.0.2",
+    "axios": "^0.16.2",
+    "babel-polyfill": "^6.23.0",
+    "body-parser": "^1.17.2",
+    "cors": "^2.8.3",
+    "express": "^4.15.3",
+    "firebase-admin": "~4.2.1",
+    "firebase-functions": "^0.5.7",
+    "juice": "^4.1.0",
+    "moment": "^2.18.1",
+    "moment-timezone": "^0.5.13",
+    "nodemailer": "^4.0.1",
+    "vue-server-renderer": "^2.3.4"
+  },
+  "private": true,
+  "devDependencies": {}
+}

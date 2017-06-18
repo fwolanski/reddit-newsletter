@@ -12,9 +12,9 @@ table.main-table
         td(width="100%")
             .email-padding
                 hr
-    template(v-for="item in posts")
+    template(v-for="(item, index) in posts")
         post( v-bind:post="item", v-bind:key="item.id")
-        tr.rule-top(v-if="'comments' in item")
+        tr.rule-top(v-if="('comments' in item) || (index + 1 === posts.length)")
             td(width="100%")
                 .email-padding
                     hr
@@ -22,7 +22,7 @@ table.main-table
         td(width="100%")
             .disclaimer.email-sans
                 p
-                    | You received this email because you subscribed via the Reddit Newsletter.
+                    | You received this email because you subscribed via redditnewsletter.
                     | You can unsubscribe from this newsletter instantly.
                 p
                     | The reddit newsletter is a side project by Filip Wolanski.

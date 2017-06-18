@@ -24,7 +24,7 @@
 
                 .text.email-sans(v-if='post.is_self', v-html='selfHTML')
 
-            .comment-container.email-padding(v-if='hasComments')
+            .comment-container.email-padding(v-if='showComments')
                 .top-comments.email-sans TOP COMMENTS
                 comment(v-for='item in post.comments', v-bind:comment='item', v-bind:key='item.id')
             table.post-footer.email-sans(width="100%")
@@ -36,7 +36,6 @@
 </template>
 
 <script>
-  import axios from 'axios'
   import moment from 'moment'
   import Comment from './Comment.vue'
   import { toHtml } from "../util.js"
@@ -67,6 +66,9 @@
         return urlParts[0];
       },
       hasComments() {
+        return this.$store.state.commentCount > 0
+      },
+      showComments() {
         return 'comments' in this.post && this.post.comments.length > 0
       },
       hasImage() {
@@ -93,12 +95,10 @@
         text-align: left
         font-size: 1.5em
         font-weight: bold
+        font-style: normal
         a
             color: $dark-1
             text-decoration: none
-        &.noComments
-            font-size: 1em
-            font-weight: normal
 
     h3
         text-align: left

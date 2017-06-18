@@ -3,7 +3,7 @@
         .sub r/
         .spinner-container(v-if="subreddit.downloading")
             .spinner
-        input(type="text", v-model="sub", @blur="blur", @keyup.enter="onEnter", :class="{ierror: !subreddit.valid}")
+        input(type="text", v-model="sub", :disabled="busy", @blur="blur", @keyup.enter="onEnter", :class="{ierror: !subreddit.valid}")
         .error(v-bind:class="{hidden: subreddit.valid}")
             | Oops! Couldn't find this subreddit
 </template>
@@ -18,9 +18,7 @@
         "sub": "",
       }
     },
-    computed: mapState({
-      subreddit: 'subreddit'
-    }),
+    computed: mapState([ 'subreddit', 'busy']),
     created () {
       this.sub = this.subreddit.name
     },

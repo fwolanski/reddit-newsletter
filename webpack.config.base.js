@@ -1,14 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-  entry: './src/client/index.js',
-  output: {
-    path: path.resolve(__dirname, './dist'),
-    // publicPath: '/dist/',
-    filename: 'index.js'
-  },
   module: {
     rules: [
       {
@@ -56,10 +49,7 @@ module.exports = {
       'vue$': 'vue/dist/vue.esm.js',
     }
   },
-  devtool: '#eval-source-map',
-  plugins: [new HtmlWebpackPlugin({
-    title: "Reddit Newsletter"
-  })]
+  devtool: '#eval-source-map'
 };
 
 if (process.env.NODE_ENV === 'production') {

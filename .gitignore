@@ -57,5 +57,12 @@ typings/
 # dotenv environment variables file
 .env
 
-dist/
+public/
 .DS_Store
+.idea
+.firebaserc
+firebase-debug.log
+
+vue-ssr-server-bundle.json
+
+

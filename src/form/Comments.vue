@@ -7,14 +7,14 @@
 
         .option
             .ib.line-height
-                input#includeComments(type="checkbox", v-model="include")
+                input#includeComments(type="checkbox", v-model="include", :disabled="busy")
                 label(for="includeComments")
                     | Include comments
         .option(v-if="include")
             .ib.pad-right
                 | Up to
             .ib
-                select(v-model="count")
+                select(v-model="count", :disabled="busy")
                     option 1
                     option 3
                     option 5
@@ -23,6 +23,7 @@
 </template>
 
 <script>
+  import { mapState } from 'vuex'
 
   export default {
     name: 'comments',
@@ -53,8 +54,8 @@
           this.prev = parseInt(newValue);
           this.$store.commit("updateCommentCount", parseInt(newValue));
         }
-      }
-
+      },
+      ...mapState(['busy'])
     }
   }
 
@@ -64,6 +65,7 @@
 
     select
         max-width: 4em
+        font-size: 1em
 
     .option
         display: inline-block

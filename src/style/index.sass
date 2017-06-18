@@ -1,4 +1,4 @@
-@import "normalize.css"
+@import "normalize"
 @import "colors"
 
 .email-sans
@@ -39,7 +39,7 @@
 .ib
     display: inline-block
 
-.button
+button
     display: inline-block
     padding: 1em
     cursor: pointer
@@ -53,6 +53,8 @@
     text-transform: uppercase
     font-size: 0.875em
     transition: background-color 0.2s ease-out
+    touch-action: manipulation
+    border: 1px solid $primary
     &:hover
         background-color: $primary-hover
 

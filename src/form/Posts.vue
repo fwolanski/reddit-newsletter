@@ -7,7 +7,7 @@
                 | On busy subreddit, we'll easily be able to fill this number, but on less popular ones,
                 | this might not be so easy.
 
-        select(v-model="posts")
+        select(v-model="posts", :disabled="busy")
             option 1
             option 3
             option 5
@@ -27,6 +27,7 @@
         get () { return this.$store.state.postCount; },
         set (newValue) { this.$store.commit('updatePostCount', newValue); }
       },
+      ...mapState(['busy'])
 
     }
   }
@@ -37,6 +38,7 @@
 
     select
         max-width: 4em
+        font-size: 1em
 
 
 </style>
