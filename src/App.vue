@@ -1,25 +1,54 @@
 <template lang="pug">
+    #app
+        .container
+            h1.email-sans
+                span.reddit reddit
+                span.newsletter newsletter
+            h2.email-serif Turn any subreddit into a newsletter
 
-#app
-    .container
-        h1.email-sans
-            span.reddit reddit
-            span.newsletter newsletter
-        h2.email-serif Turn any subreddit into a newsletter
-        p.email-sans Create your newsletter by specyfying your subreddit, changing your options, etc.
+            p.email-sans(v-if="!subscribe")
+                | You can create your newsletter by specyfying your subreddit, and then
+                | selecting how many posts and comments you would like to see, and
+                | when and how often you'd like the newsletter to go out. You'll be able
+                | to see a preview below before subscribing.
 
-        Options
+            .messages(v-if="subscribe")
+                template(v-if="confirm")
+                    p.email-sans
+                        | Awesome! You've activated your subscription to the&nbsp;
+                        span.reddit r/{{subreddit.name}}
+                        span {{frequency}}
+                        span.reddit newsletter.
+                    button(@click="another") Create another subscription
+                template(v-else-if="remove")
+                    p.email-sans
+                        | Ok, we've cancelled your subscription to the&nbsp;
+                        span.reddit r/{{subreddit.name}}
+                        span {{frequency}}
+                        span.reddit newsletter.
+                        | You won't be receiving it anymore.
+                template(v-else="")
+                    p.email-sans
+                        | An email has been sent to {{ email }}.
+                        | You must click the link in your email to activate your
+                        | subscription to the&nbsp;
+                        span.reddit r/{{subreddit.name}}
+                        span {{frequency}}
+                        span.reddit newsletter.
+                    button(@click="another") Create another subscription
 
-        .border-container(v-if="previewable")
-            .preview-container
-                Newsletter
+            Options(v-if="!subscribe")
 
-        .footer.email-sans
-            .home.ib
-                | Copyright &copy; 2017&nbsp;
-                a(href="https://filipwolanski.com") Filip Wolanski
-            .source.ib
-                a(href="https://github.com/fwolanski/reddit-newsletter", target="_blank") view source
+            .border-container(v-if="previewable && !subscribe")
+                .preview-container
+                    Newsletter
+
+            .footer.email-sans
+                .home.ib
+                    | Copyright &copy; 2017&nbsp;
+                    a(href="https://filipwolanski.com") Filip Wolanski
+                .source.ib
+                    a(href="https://github.com/fwolanski/reddit-newsletter", target="_blank") view source
 
 </template>
 
@@ -34,8 +63,15 @@
     components: { Newsletter, Options},
     name: 'app',
     computed: {
-      ...mapState(['previewable'])
+      ...mapState(['previewable', 'subscribe', 'email',
+        'frequency', 'subreddit', 'renderEmailOnly',
+        'confirm', 'remove'])
     },
+    methods: {
+      another () {
+        this.$store.commit('resetToAnother');
+      }
+    }
   }
 
 </script>
@@ -51,8 +87,6 @@
         font-weight: bold
         text-align: left
         color: $dark-1
-        .reddit
-            color: $primary
     h2
         text-align: left
         font-weight: normal
@@ -62,6 +96,9 @@
         margin: 0
         padding: 0 0 1rem 0
         color: $dark-1
+
+    .reddit
+        color: $primary
 
 
     #app
@@ -82,6 +119,13 @@
         .preview-container
             margin: 2rem auto
             max-width: 600px
+
+        .another
+            margin-top: 2em
+            margin-bottom: 2em
+            button
+                margin-top: 1em
+
 
     .footer
         padding-top: 2em

@@ -6,11 +6,15 @@
         .inp-display
             .input-container.ib
                 input(type="text", :disabled="busy", v-model="email", @keyup="onKeyup", :class="{ierror: !valid}")
-                .error(v-bind:class="{hidden: valid}")
-                    span(v-if="!empty") Oops! This doesn't look like an email.
-                    span(v-if="empty") You need to enter your email.
+                .error(v-bind:class="{hidden: valid && !serverError}")
+                    span(v-if="!empty && !valid") Oops! This doesn't look like an email.
+                    span(v-if="empty && !valid") You need to enter your email.
+                    span(v-if="serverError") A server error occured. Please try again later.
             .button-container.ib
-                button(@click="subscribe", :disabled="busy") Subscribe
+                button(@click="subscribe", :disabled="busy")
+                    span(:class="{hidden : downloading}") Subscribe
+            .spinner-container(v-if="downloading")
+                .spinner
 </template>
 
 <script>
@@ -27,12 +31,15 @@
       return{
         "email": "",
         "valid": true,
-        "empty": false
+        "empty": false,
+        "serverError": false,
+        "downloading": false,
       }
     },
     computed: mapState(['busy']),
     methods: {
       subscribe() {
+        this.serverError = false;
         if (this.email === "") {
           this.valid = false;
           this.empty = true;
@@ -45,7 +52,17 @@
 
         this.valid = true;
         this.empty = false;
-        this.$store.dispatch('subscribe', this.email);
+        this.downloading = true;
+
+        this.$store.dispatch('subscribe', this.email).then( () => {
+          this.downloading = false;
+
+        }).catch( err => {
+          console.error(err);
+          this.serverError = true;
+          this.downloading = false;
+          this.$store.commit('updateBusy', false);
+        });
 
       },
       onKeyup(event) {
@@ -72,7 +89,6 @@
             flex: 1 100%
 
         .button-container
-            /*flex: 1 */
             padding-left: 2em
             vertical-align: top
 
@@ -84,16 +100,45 @@
             border: 1px solid $error
 
     button
-        font-size: 0.68em
+        width: 10em
+        .hidden
+            visibility: hidden
 
     .error
         font-size: 0.75em
         color: $error
         padding-top: 0.25em
         transition: opacity 0.2s ease-out
+        height: 1em
 
         &.hidden
             opacity: 0
+
+
+    .spinner-container
+        position: relative
+        height: 0
+        width: 0
+        left: -3.5em
+        top: 1.2em
+
+    @keyframes spinner
+        to
+            transform: rotate(360deg)
+    .spinner:before
+        content: ''
+        box-sizing: border-box
+        position: absolute
+        top: 50%
+        left: 50%
+        width: 20px
+        height: 20px
+        margin-top: -10px
+        margin-left: -10px
+        border-radius: 50%
+        border-top: 2px solid #fff
+        border-right: 2px solid transparent
+        animation: spinner .6s linear infinite
 
 
 </style>

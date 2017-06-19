@@ -1,44 +1,49 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import moment from 'moment';
 import { getPosts, subscribe } from "./util";
 import "babel-polyfill";
-require('moment-timezone');
 
 Vue.use(Vuex);
 
 const createStore = (context) => {
+  let defaults = {
+    subreddit: {
+      name: "",
+      valid: true,
+      downloading: false
+    },
+    postCount: 5,
+    commentCount:  3,
+
+    // schedule
+    frequency: "weekly",
+
+    time: {
+      hour: 9,
+      meridiem: "AM"
+    },
+    monthly: 1,
+    weekly: "Monday",
+
+    email: "",
+
+    timezone: "",
+
+    // state machine
+    previewable: false,
+    subscribe: false,
+    busy: false,
+
+    // downloadable data
+    posts: []
+
+  };
+
+
+  let state = Object.assign({}, defaults, context);
 
   const store = new Vuex.Store({
-    state: {
-
-      subreddit: {
-        name: context.subreddit,
-        valid: true,
-        downloading: false
-      },
-      postCount: context.postCount,
-      commentCount: context.commentCount,
-
-      // schedule
-      frequency: context.frequency,
-      time: context.time,
-      monthly: context.monthly,
-      weekly: context.weekly,
-
-      email: "",
-
-      timezone: moment.tz.guess(),
-
-      // state machine
-      previewable: false,
-      subscribed: false,
-      busy: false,
-
-      // downloadable data
-      posts: []
-
-    },
+    state: state,
     mutations: {
       updateSubreddit (state, value) {
         if (state.subreddit.name !== value) {
@@ -57,7 +62,7 @@ const createStore = (context) => {
       },
       updatePostCount (state, value) {
         if (state.postCount !== value) {
-          state.postCount = value;
+          state.postCount = parseInt(value);
           if (store.getters.shouldGetPosts) {
             store.dispatch("updatePosts");
           }
@@ -65,7 +70,7 @@ const createStore = (context) => {
       },
       updateCommentCount (state, value) {
         if (state.commentCount !== value) {
-          state.commentCount = value;
+          state.commentCount = parseInt(value);
           if (store.getters.shouldGetPosts) {
             store.dispatch("updatePosts");
           }
@@ -91,11 +96,20 @@ const createStore = (context) => {
       updateEmail (state, value) {
         state.email = value;
       },
-      updateSubscribed (state, value) {
-        state.subscribed = value;
+      updateSubscribe (state, value) {
+        state.subscribe = value;
       },
       updatePosts (state, value) {
         state.posts = value;
+      },
+      updateBusy(state, value) {
+        state.busy = value
+      },
+      resetToAnother(state) {
+        state.subreddit.name = "";
+        state.previewable = false;
+        state.subscribe = false;
+
       }
     },
     getters: {
@@ -106,6 +120,9 @@ const createStore = (context) => {
     actions: {
       updatePosts ({commit, state}) {
         return new Promise ( (resolve, reject) => {
+          if (typeof window !== 'undefined' && typeof window.scrollTo === 'function') {
+            window.scrollTo(0, 0);
+          }
           commit('updateSubredditObject', {
             name: state.subreddit.name,
             downloading: true,
@@ -135,9 +152,10 @@ const createStore = (context) => {
 
       subscribe({commit, state}, email) {
         commit('updateEmail', email);
-        console.log("subscribing to " + email);
+        commit('updateBusy', true);
         return subscribe(state).then( () => {
-          commit('updateSubscribed', true);
+          commit('updateSubscribe', true);
+          commit('updateBusy', false);
         });
       }
     }

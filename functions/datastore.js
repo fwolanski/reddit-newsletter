@@ -30,14 +30,16 @@ const toGlobalTimezone = (state) => {
 
 const stateToDB = (state) => {
 
-  // quickly clone out object
+  // clone out object
   let dbState = JSON.parse(JSON.stringify(state));
   toGlobalTimezone(dbState);
 
-  dbState.subreddit = state.subreddit.name;
   dbState.subscribed = false;
 
+  delete dbState["subscribe"];
   delete dbState["previewable"];
+  delete dbState["busy"];
+  delete dbState["renderEmailOnly"];
 
   return dbState;
 
@@ -46,9 +48,6 @@ const stateToDB = (state) => {
 module.exports.addSubscription = (state) => {
 
   let dbState = stateToDB(state);
-  console.log(dbState);
-  return;
-
   const subKey = datastore.key('Subscription');
   const entity = {
     key: subKey,
@@ -57,26 +56,28 @@ module.exports.addSubscription = (state) => {
 
   return datastore.save(entity)
     .then(() => {
-      console.log(`Subscription ${subKey.id} created successfully.`);
+      return new Promise((resolve, reject) => {
+        resolve(subKey.id);
+      })
     });
 };
 
-module.exports.listSubscriptions = () => {
-  const query = datastore.createQuery('Subscription')
-    .order('created');
-
-  datastore.runQuery(query)
-    .then((results) => {
-      const tasks = results[0];
-
-      console.log('Tasks:');
-      tasks.forEach((task) => {
-        const taskKey = task[datastore.KEY];
-        console.log(taskKey.id, task);
-      });
-    })
-    .catch((err) => {
-      console.error('ERROR:', err);
+module.exports.confirmSubscription = (id) => {
+  let entity;
+  return datastore.get({
+    kind: 'Subscription',
+    id: id
+  }).then( result => {
+    if (result.length !== 1) {
+      throw `Could not find entity with id: ${id}`
+    }
+    entity = result[0];
+    entity.subscribed = true;
+    return datastore.update(entity);
+  }).then(() => {
+    return new Promise((resolve, reject) => {
+      resolve(entity)
     });
+  });
 };
 

@@ -7,44 +7,61 @@ table.main-table
                 a.ib(:href="`https://www.reddit.com/r/${this.subreddit.name}`").subreddit r/{{subreddit.name}}
                 .ib.weekly {{ frequency }}
                 a.ib(href="https://filipwolanski.com/reddit-newsletter").newsletter newsletter
-            h3.email-sans {{ currentDate }}
-    tr.rule-top
-        td(width="100%")
-            .email-padding
-                hr
-    template(v-for="(item, index) in posts")
-        post( v-bind:post="item", v-bind:key="item.id")
-        tr.rule-top(v-if="('comments' in item) || (index + 1 === posts.length)")
+            h3.email-sans(v-if="!subscribe") {{ currentDate }}
+
+    template(v-if="!subscribe")
+        tr.rule-top
             td(width="100%")
                 .email-padding
                     hr
+        template(v-for="(item, index) in posts")
+            post( v-bind:post="item", v-bind:key="item.id")
+            tr.rule-top(v-if="('comments' in item) || (index + 1 === posts.length)")
+                td(width="100%")
+                    .email-padding
+                        hr
+
+    template(v-if="subscribe")
+        tr.rule-top.subscribe
+            td(width="100%")
+                .email-padding
+                    hr
+        Subscribe
+        tr.rule-top
+            td(width="100%")
+                .email-padding
+                    hr
+
     tr
         td(width="100%")
             .disclaimer.email-sans
-                p
+                p(v-if="!subscribe")
                     | You received this email because you subscribed via redditnewsletter.
                     | You can unsubscribe from this newsletter instantly.
+                p(v-if="subscribe")
+                    | If you received this email by mistake, simply delete it. You won't be subscribed if you don't click the confirmation link above.
                 p
                     | The reddit newsletter is a side project by Filip Wolanski.
                     | Published in Montreal, Canada.
-                    | Reddit newsletter is not associated with Reddit in any way.
+                    | redditnewsletter is not associated with Reddit in any way.
 
 </template>
 
 <script>
   import moment from 'moment'
   import Post from "./Post.vue";
+  import Subscribe from "./Subscribe.vue";
   import { mapState, mapMutations } from 'vuex'
 
   export default {
-    components: { Post},
+    components: {Post, Subscribe},
     name: 'newsletter',
     data () {
       return {
         "currentDate": moment().format('MMMM Do, YYYY')
       }
     },
-    computed: mapState(['posts', 'subreddit', 'frequency'])
+    computed: mapState(['posts', 'subreddit', 'frequency', 'subscribe'])
   }
 
 </script>
@@ -88,6 +105,9 @@ table.main-table
         padding-top: 0.5em
         padding-bottom: 3em
         text-transform: uppercase
+
+    .rule-top.subscribe > td
+         padding-top: 2em
 
     .rule-top > td
         padding-bottom: 2em

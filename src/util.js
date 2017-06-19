@@ -1,5 +1,5 @@
 import axios from 'axios'
-import htmlparser from 'htmlparser2'
+import settings from '../functions/config.json'
 
 const getComments = (state, postId) => {
   return new Promise((resolve, reject) => {
@@ -118,13 +118,27 @@ export const toHtml = (value) => {
 
 };
 
-const SERVER = "http://localhost:5002";
 export const subscribe = (state) => {
 
   // don't send posts over the wire
   delete state['posts'];
 
-  return axios.post(`${SERVER}/subscribe`, state);
+  return axios.post(`${settings.API}/subscribe`, state);
 
 
-}
+};
+
+
+export const ordinalSuffix = (i) => {
+  let j = i % 10, k = i % 100;
+  if (j == 1 && k != 11) {
+    return i + "st";
+  }
+  if (j == 2 && k != 12) {
+    return i + "nd";
+  }
+  if (j == 3 && k != 13) {
+    return i + "rd";
+  }
+  return i + "th";
+};

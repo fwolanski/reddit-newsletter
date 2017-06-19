@@ -7,34 +7,7 @@
             | On the
         .ib.pad-right(v-if="frequency === 'monthly'")
             select(v-model="monthly", :disabled="busy")
-                option(value="1") 1st
-                option(value="2") 2nd
-                option(value="3") 3rd
-                option(value="4") 4th
-                option(value="5") 5th
-                option(value="6") 6th
-                option(value="7") 7th
-                option(value="8") 8th
-                option(value="9") 9th
-                option(value="10") 10th
-                option(value="11") 11th
-                option(value="12") 12th
-                option(value="13") 13th
-                option(value="14") 14th
-                option(value="15") 15th
-                option(value="16") 16th
-                option(value="17") 17th
-                option(value="18") 18th
-                option(value="19") 19th
-                option(value="20") 20th
-                option(value="21") 21st
-                option(value="22") 22nd
-                option(value="23") 23rd
-                option(value="24") 24th
-                option(value="25") 25th
-                option(value="26") 26th
-                option(value="27") 27th
-                option(value="28") 28th
+                option(v-for='(day, idx) in monthDays', :value="idx + 1") {{ day }}
         .ib.pad-right(v-if="frequency === 'monthly'")
             | day of the month at
         .ib.pad-right(v-if="frequency === 'weekly'")
@@ -71,15 +44,24 @@
 <script>
   import { mapState } from 'vuex'
   import moment from 'moment';
+  import { ordinalSuffix } from '../util'
 
   export default {
     name: 'schedule',
     data () {
       return {
-        weekdays: moment.weekdays(true)
+        weekdays: moment.weekdays(true),
       }
     },
     computed: {
+      monthDays() {
+        let ret = [];
+        let i;
+        for(i = 1; i < 29; i++) {
+          ret.push(ordinalSuffix(i))
+        }
+        return ret;
+      },
       hour: {
         get () { return this.$store.state.time.hour; },
         set (newValue) {
