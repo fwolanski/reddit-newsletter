@@ -4,13 +4,13 @@
             .exp-head Like the preview below? Subscribe.
             .exp-sub You'll receive an email confirming your subscription.
         .inp-display
-            .input-container.ib
+            .input-container
                 input(type="text", :disabled="busy", v-model="email", @keyup="onKeyup", :class="{ierror: !valid}")
                 .error(v-bind:class="{hidden: valid && !serverError}")
                     span(v-if="!empty && !valid") Oops! This doesn't look like an email.
                     span(v-if="empty && !valid") You need to enter your email.
                     span(v-if="serverError") A server error occured. Please try again later.
-            .button-container.ib
+            .button-container
                 button(@click="subscribe", :disabled="busy")
                     span(:class="{hidden : downloading}") Subscribe
             .spinner-container(v-if="downloading")
@@ -91,6 +91,14 @@
         .button-container
             padding-left: 2em
             vertical-align: top
+
+        @media screen and (max-width: $break-narrow)
+            flex-flow: row wrap
+
+            .button-container
+                padding-left: 0em
+                padding-top: 1em
+
 
     input
         font-size: 1em

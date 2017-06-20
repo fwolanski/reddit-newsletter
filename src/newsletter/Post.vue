@@ -1,18 +1,16 @@
 <template lang="pug">
     tr.post-item
         td(width="100%")
-            table.image-post(v-if='!post.is_self', width="100%")
-                tr
-                    td(valign="top")
-                        h2(:class="{noComments : !hasComments}").email-sans
-                            a(:href="post.url", target='_blank' v-html="titleHTML")
-                        h3.email-sans
-                            | submitted by&nbsp;
-                            a(:href="`https://www.reddit.com/user/${post.author}/`", target="_blank") {{ post.author }}
-                            | &nbsp;on {{formattedDate}} via {{ link }}
-                    td(valign="top", v-if="hasImage")
-                        a(:href='post.url', target="_blank")
-                            img(:src='post.thumbnail', align='right', :width='post.thumbnail_width', :height='post.thumbnail_height', border='0')
+            .image-post(v-if='!post.is_self', width="100%")
+                h2(:class="{noComments : !hasComments}").email-sans
+                    a(:href="post.url", target='_blank' v-html="titleHTML")
+                h3.email-sans
+                    | submitted by&nbsp;
+                    a(:href="`https://www.reddit.com/user/${post.author}/`", target="_blank") {{ post.author }}
+                    | &nbsp;on {{formattedDate}} via {{ link }}
+                .imageContainer(v-if="hasImage")
+                    a(:href='post.url', target="_blank")
+                        img(:src='post.thumbnail', :width='post.thumbnail_width', :height='post.thumbnail_height', border='0')
 
             .self-post(v-if='post.is_self')
                 h2(:class="{noComments : !hasComments}").email-sans
@@ -22,7 +20,7 @@
                     a(:href="`https://www.reddit.com/user/${post.author}/`", target="_blank") {{ post.author }}
                     | &nbsp;on {{formattedDate}}
 
-                .text.email-sans(v-if='post.is_self', v-html='selfHTML')
+                .text.email-sans(v-html='selfHTML')
 
             .comment-container.email-padding(v-if='showComments')
                 .top-comments.email-sans TOP COMMENTS
@@ -93,7 +91,7 @@
         padding-top: 0
         padding-bottom: 3px
         text-align: left
-        font-size: 1.5em
+        font-size: 2em
         font-weight: bold
         font-style: normal
         a
@@ -102,7 +100,7 @@
 
     h3
         text-align: left
-        font-size: 0.75em
+        font-size: 0.875em
         color: $dark-3
         margin: 0
         padding-top: 0
@@ -112,11 +110,11 @@
             text-decoration: none
 
     .image-post
-        border-collapse: collapse
-        border-spacing: 0
-        border: none
-        img
-            padding-left: 15px
+        .imageContainer
+            padding-left: 0
+            padding-bottom: 1em
+            img
+                float: none
 
     .self-post
         .text

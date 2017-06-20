@@ -1,5 +1,5 @@
 import axios from 'axios'
-import settings from '../functions/config.json'
+import { API } from '../functions/config.js'
 
 const getComments = (state, postId) => {
   return new Promise((resolve, reject) => {
@@ -123,7 +123,7 @@ export const subscribe = (state) => {
   // don't send posts over the wire
   delete state['posts'];
 
-  return axios.post(`${settings.API}/subscribe`, state);
+  return axios.post(`${API}/subscribe`, state);
 
 
 };

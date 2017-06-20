@@ -78,9 +78,16 @@
                 color: $dark-3
                 font-size: 0.7em
 
+            @media screen and (max-width: $break-wide)
+                flex: 1 100%
+
+
         .input
             flex: 4 75%
             margin: 1.5rem 0
+            @media screen and (max-width: $break-wide)
+                flex: 1 100%
+                margin: 0 0 1em 0
 
 
 
@@ -88,5 +95,8 @@
             flex: 4 100%
             height: 1px
             background-color: $border
+
+
+
 
 </style>

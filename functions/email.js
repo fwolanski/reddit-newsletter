@@ -1,24 +1,54 @@
 const nodemailer = require('nodemailer');
-const settings = require("./config.json");
+const {MAILGUN, GMAIL_ACCNT, GMAIL_PASS, API} = require("./config.js");
+const { renderEmail } = require('./render');
+
+const mailgun = require('mailgun.js');
+const mg = mailgun.client({username: 'api', key: MAILGUN.KEY});
 
 let transporter = nodemailer.createTransport({
   service: "Gmail",
   auth: {
-    user: settings.GMAIL_ACCNT,
-    pass: settings.GMAIL_PASS
+    user: GMAIL_ACCNT,
+    pass: GMAIL_PASS
   }
 });
 
 
-module.exports.sendEmail = (to, from, subject, html) => {
+module.exports.sendConfirmationEmail = (state) => {
+  state.subscribe = true;
 
-  let mailOptions = {
-    from: "\"redditnewsletter\" <redditnewsletter@mydomain.com>",
-    to: to,
-    subject: subject,
-    html: html
-  };
+  return renderEmail(state).then( (html) => {
 
-  return transporter.sendMail(mailOptions)
+    let mailOptions = {
+      from: "redditnewsletter <redditnewsletter@filipwolanski.com>",
+      to: state.email,
+      subject: `r/${state.subreddit.name}${state.frequency}newsletter Subscription Confirmation`,
+      html: html,
+      text: ""
+    };
+    return mg.messages.create(MAILGUN.DOMAIN, mailOptions);
+  });
+};
 
-}
+module.exports.sendNewsletter = (state) => {
+  let key = Object.getOwnPropertySymbols(state)[0];
+  let id = state[key].id;
+
+  state.subscribe = false;
+  state.removeURL = `${API}/remove?id=${id}`;
+
+  return renderEmail(state).then( (html) => {
+
+    let mailOptions = {
+      from: "redditnewsletter <redditnewsletter@filipwolanski.com>",
+      to: state.email,
+      subject: `r/${state.subreddit.name}${state.frequency}newsletter`,
+      html: html,
+      text: ""
+    };
+
+    return mg.messages.create(MAILGUN.DOMAIN, mailOptions);
+
+  });
+
+};

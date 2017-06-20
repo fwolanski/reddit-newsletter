@@ -7,26 +7,21 @@
             h2.email-serif Turn any subreddit into a newsletter
 
             p.email-sans(v-if="!subscribe")
-                | You can create your newsletter by specyfying your subreddit, and then
-                | selecting how many posts and comments you would like to see, and
-                | when and how often you'd like the newsletter to go out. You'll be able
+                | You can create your newsletter by specyfying your subreddit,
+                | selecting how many posts and comments you'd like to see, and
+                | when and how often you'd like to receive it. You'll be able
                 | to see a preview below before subscribing.
 
             .messages(v-if="subscribe")
                 template(v-if="confirm")
                     p.email-sans
-                        | Awesome! You've activated your subscription to the&nbsp;
-                        span.reddit r/{{subreddit.name}}
-                        span {{frequency}}
-                        span.reddit newsletter.
+                        | Awesome! You've activated your subscription. You'll get your
+                        | next newsletter at the appointed time.
                     button(@click="another") Create another subscription
                 template(v-else-if="remove")
                     p.email-sans
-                        | Ok, we've cancelled your subscription to the&nbsp;
-                        span.reddit r/{{subreddit.name}}
-                        span {{frequency}}
-                        span.reddit newsletter.
-                        | You won't be receiving it anymore.
+                        | Ok, we've cancelled your subscription. If you signed up to any
+                        | other newsletters, you will still continue receiving them.
                 template(v-else="")
                     p.email-sans
                         | An email has been sent to {{ email }}.
@@ -119,6 +114,8 @@
         .preview-container
             margin: 2rem auto
             max-width: 600px
+            @media screen and (max-width: $break-wide)
+                margin: 2rem 1rem
 
         .another
             margin-top: 2em
@@ -136,5 +133,7 @@
             color: $dark-3
         .source
             float: right
+            @media screen and (max-width: $break-narrow)
+               float: none
 
 </style>

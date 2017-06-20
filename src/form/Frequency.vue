@@ -40,9 +40,14 @@
 </script>
 
 <style lang="sass" scoped>
+    @import "../style/colors"
 
     .freq-item
         display: inline-block
         width: 33%
+
+        @media screen and (max-width: $break-narrow)
+            display: block
+            width: 100%
 
 </style>

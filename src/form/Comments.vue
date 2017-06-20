@@ -62,6 +62,7 @@
 </script>
 
 <style lang="sass" scoped>
+    @import "../style/colors"
 
     select
         max-width: 4em
@@ -74,6 +75,11 @@
         height: 2.5em
         .line-height
             line-height: 2.5em
+
+
+        @media screen and (max-width: $break-narrow)
+            display: block
+            width: 100%
 
 
 </style>

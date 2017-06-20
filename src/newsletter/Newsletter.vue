@@ -37,7 +37,9 @@ table.main-table
             .disclaimer.email-sans
                 p(v-if="!subscribe")
                     | You received this email because you subscribed via redditnewsletter.
-                    | You can unsubscribe from this newsletter instantly.
+                    | You can&nbsp;
+                    a(:href="removeURL") unsubscribe
+                    | &nbsp;from this newsletter instantly.
                 p(v-if="subscribe")
                     | If you received this email by mistake, simply delete it. You won't be subscribed if you don't click the confirmation link above.
                 p
@@ -61,7 +63,7 @@ table.main-table
         "currentDate": moment().format('MMMM Do, YYYY')
       }
     },
-    computed: mapState(['posts', 'subreddit', 'frequency', 'subscribe'])
+    computed: mapState(['posts', 'subreddit', 'frequency', 'subscribe', 'removeURL'])
   }
 
 </script>
@@ -83,7 +85,7 @@ table.main-table
 
     .header
         font-weight: normal
-        font-size: 2.25em
+        font-size: 3em
         text-align: left
         margin: 0
         padding-top: 0
@@ -103,7 +105,7 @@ table.main-table
         text-align: left
         margin: 0
         padding-top: 0.5em
-        padding-bottom: 3em
+        padding-bottom: 5em
         text-transform: uppercase
 
     .rule-top.subscribe > td
@@ -125,8 +127,8 @@ table.main-table
         text-align: left
         p
             margin: 0 0 1em 0
-
-
+        a
+            color: $primary
 
 
 </style>

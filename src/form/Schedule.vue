@@ -93,6 +93,8 @@
 </script>
 
 <style lang="sass" scoped>
+    @import "../style/colors"
+
     select
         font-size: 1em
 

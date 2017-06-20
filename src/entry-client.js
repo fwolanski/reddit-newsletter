@@ -20,19 +20,19 @@ let storeData = {
   },
   monthly: now.date() > 28 ? 20 : now.date(),
   weekly: moment.weekdays()[now.day()],
-  timezone: moment.tz.guess(),
+  timezone: moment.tz.guess()
 };
 
 
 if (getQueryStringValue("confirm") === "true") {
   storeData.subscribe = true;
   storeData.confirm = true;
+} else if (getQueryStringValue("remove") === "true") {
+  storeData.subscribe = true;
+  storeData.remove = true;
 }
 
-
 const store = createStore(storeData);
-
-
 
 const app = new Vue({
   store,
