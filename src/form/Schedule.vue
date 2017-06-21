@@ -2,21 +2,27 @@
     .root
         .exp
             .exp-head When would you like to receive the newsletter?
-            .exp-sub It will only have posts for the time-frame you listed
-        .ib.pad-right(v-if="frequency === 'monthly'")
-            | On the
-        .ib.pad-right(v-if="frequency === 'monthly'")
-            select(v-model="monthly", :disabled="busy")
-                option(v-for='(day, idx) in monthDays', :value="idx + 1") {{ day }}
-        .ib.pad-right(v-if="frequency === 'monthly'")
-            | day of the month at
-        .ib.pad-right(v-if="frequency === 'weekly'")
-            | Every
-        .ib.pad-right(v-if="frequency === 'weekly'")
-            select(v-model="weekly", :disabled="busy")
-                option(v-for='week in weekdays', :value="week") {{ week }}
-        .ib.pad-right(v-if="frequency === 'weekly'")
-            | at
+            .exp-sub It should arrive within a few mintues of the time you select.
+        template(v-if="frequency === 'monthly'")
+            .ib.pad-right
+                | On the
+            .ib.pad-right
+                select(v-model="monthly", :disabled="busy")
+                    option(v-for='(day, idx) in monthDays', :value="idx + 1") {{ day }}
+            .ib.pad-right
+                | of the month
+            .mobile-break
+            .ib.pad-right
+                | at
+        template(v-if="frequency === 'weekly'")
+            .ib.pad-right
+                | Every
+            .ib.pad-right
+                select(v-model="weekly", :disabled="busy")
+                    option(v-for='week in weekdays', :value="week") {{ week }}
+            .mobile-break
+            .ib.pad-right
+                | At
         .ib.pad-right(v-if="frequency === 'daily'")
             | Every day at
         .ib.pad-right
@@ -97,6 +103,13 @@
 
     select
         font-size: 1em
+
+
+    .mobile-break
+        display: none
+        height: 1em
+        @media screen and (max-width: $break-narrow)
+            display: block
 
 
 

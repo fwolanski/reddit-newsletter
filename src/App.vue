@@ -7,10 +7,8 @@
             h2.email-serif Turn any subreddit into a newsletter
 
             p.email-sans(v-if="!subscribe")
-                | You can create your newsletter by specyfying your subreddit,
-                | selecting how many posts and comments you'd like to see, and
-                | when and how often you'd like to receive it. You'll be able
-                | to see a preview below before subscribing.
+                | You can create a newslettter from any subreddit. Just type it below,
+                | set your preferences, checkout your preview, and subscribe!
 
             .messages(v-if="subscribe")
                 template(v-if="confirm")
@@ -21,10 +19,10 @@
                 template(v-else-if="remove")
                     p.email-sans
                         | Ok, we've cancelled your subscription. If you signed up to any
-                        | other newsletters, you will still continue receiving them.
+                        | other newsletters, you'll still continue receiving them.
                 template(v-else="")
                     p.email-sans
-                        | An email has been sent to {{ email }}.
+                        | You should receive an email at {{ email }} in the next few minutes.
                         | You must click the link in your email to activate your
                         | subscription to the&nbsp;
                         span.reddit r/{{subreddit.name}}

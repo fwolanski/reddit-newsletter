@@ -16,24 +16,26 @@ module.exports = merge(baseConfig, {
   plugins: [
 
     new CopyWebpackPlugin([
-    { from: 'src/index.jade',
-      to: "index.html",
-      transform: function(content, path) {
-        return pug.render(content, {
-          pretty: false,
-          compileDebug: false
-        });
-      }
-    },
-    { from: 'src/404.jade',
-      to: "404.html",
-      transform: function(content, path) {
-        return pug.render(content, {
-          pretty: false,
-          compileDebug: false
-        });
-      }
-    },
-  ])]
+      { from: 'src/index.jade',
+        to: "index.html",
+        transform: function(content, path) {
+          return pug.render(content, {
+            pretty: false,
+            compileDebug: false
+          });
+        }
+      },
+      { from: 'src/404.jade',
+        to: "404.html",
+        transform: function(content, path) {
+          return pug.render(content, {
+            pretty: false,
+            compileDebug: false
+          });
+        }
+      },
+      { from: 'src/favicon.png', to: "favicon.png"
+      },
+    ])]
 });
 

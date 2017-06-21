@@ -2,7 +2,7 @@
     .root
         .exp
             .exp-head How often would you like to receive the newsletter?
-            .exp-sub It will only have posts for the time-frame you listed.
+            .exp-sub It will only have posts for the time-frame you specify.
         .freq-item
             input#monthly(type="radio", v-model="freq", value="monthly", :disabled="busy")
             label(for="monthly")

@@ -66,3 +66,4 @@ firebase-debug.log
 vue-ssr-server-bundle.json
 
 functions/config.js
+appengine/lib

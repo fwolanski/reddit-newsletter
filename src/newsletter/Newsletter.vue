@@ -6,7 +6,7 @@ table.main-table
             .header.email-sans
                 a.ib(:href="`https://www.reddit.com/r/${this.subreddit.name}`").subreddit r/{{subreddit.name}}
                 .ib.weekly {{ frequency }}
-                a.ib(href="https://filipwolanski.com/reddit-newsletter").newsletter newsletter
+                a.ib(:href="static").newsletter newsletter
             h3.email-sans(v-if="!subscribe") {{ currentDate }}
 
     template(v-if="!subscribe")
@@ -54,13 +54,15 @@ table.main-table
   import Post from "./Post.vue";
   import Subscribe from "./Subscribe.vue";
   import { mapState, mapMutations } from 'vuex'
+  import { STATIC } from '../../functions/config.js'
 
   export default {
     components: {Post, Subscribe},
     name: 'newsletter',
     data () {
       return {
-        "currentDate": moment().format('MMMM Do, YYYY')
+        "currentDate": moment().format('MMMM Do, YYYY'),
+        "static": STATIC
       }
     },
     computed: mapState(['posts', 'subreddit', 'frequency', 'subscribe', 'removeURL'])

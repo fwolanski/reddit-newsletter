@@ -3,10 +3,7 @@
         .exp
             .exp-head How many posts would you like to see?
             .exp-sub
-                | Please indicate the maximum number of comments or posts.
-                | On busy subreddit, we'll easily be able to fill this number, but on less popular ones,
-                | this might not be so easy.
-
+                | Please indicate the maximum number of top posts to include in the newsletter.
         select(v-model="posts", :disabled="busy")
             option 1
             option 3
